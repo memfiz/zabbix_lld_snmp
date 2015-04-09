@@ -1,0 +1,56 @@
+Some examples and notes
+
+Description walk example:
+snmpwalk -v2c -c public 192.168.180.100 1.3.6.1.2.1.31.1.1.1.18 | grep -i "LTK_"
+Alias walk:
+snmpwalk -v2c -c public 192.168.180.100 .1.3.6.1.2.1.31.1.1.1.1
+
+Siemens Hid example:
+snmpwalk -v2c -c Ziemen5Power 192.168.182.34 .1.3.6.1.2.1.31.1.1.1.1
+snmpwalk -v2c -c Ziemen5Power 192.168.182.34 .1.3.6.1.2.1.31.1.1.1.18
+
+OmniSwitch example:
+snmpwalk -v2c -c public 192.168.181.59 .1.3.6.1.2.1.31.1.1.1.1
+snmpwalk -v2c -c public 192.168.181.59 .1.3.6.1.2.1.31.1.1.1.18
+snmpwalk -v2c -c public 192.168.181.59 .1.3.6.1.2.1.31.1.1.1.15
+
+ASR example:
+snmpwalk -v2c -c lan2lan 192.168.148.56 1.3.6.1.2.1.31.1.1.1.18 | grep -i "LTK_"
+
+OIDs for items:
+  in_oct_oid = '1.3.6.1.2.1.31.1.1.1.6.%s' % subif_idx
+  out_oct_oid = '1.3.6.1.2.1.31.1.1.1.10.%s' % subif_idx
+
+  in_ucast_pkts_oid = '1.3.6.1.2.1.31.1.1.1.7.%s' % subif_idx
+  out_ucast_pkts_oid = '1.3.6.1.2.1.31.1.1.1.11.%s' % subif_idx
+
+  in_mcast_pkts_oid = '1.3.6.1.2.1.31.1.1.1.8.%s' % subif_idx
+  out_mcast_pkts_oid = '1.3.6.1.2.1.31.1.1.1.12.%s' % subif_idx
+
+  in_bcast_pkts_oid = '1.3.6.1.2.1.31.1.1.1.9.%s' % subif_idx
+  out_bcast_pkts_oid = '1.3.6.1.2.1.31.1.1.1.13.%s' % subif_idx
+
+  in_errors_oid = '.1.3.6.1.2.1.2.2.1.14.%s' % subif_idx
+  out_errors_oid = '.1.3.6.1.2.1.2.2.1.20.%s' % subif_idx
+
+  in_discards_oid = '.1.3.6.1.2.1.2.2.1.13.%s' % subif_idx
+  out_discards_oid = '.1.3.6.1.2.1.2.2.1.19.%s' % subif_idx
+
+  oper_state = '.1.3.6.1.2.1.2.2.1.8.%s' % subif_idx
+
+XR example - all phy interfaces
+python zabbix_snmp_interfaces_lld.py cisco_xr 192.168.133.24 public SA_riga-sa9-iptv4-3750e
+
+XR example with custom descrp regexp and alias regexp - both are optional but if alias is needed, then descr is mandatory
+python zabbix_snmp_interfaces_lld.py cisco_xr 192.168.133.249 public SA_riga-sa8-sw-4900 "^(\s+)?(LTK\_BGP\_|L3\_BGP\_)" "^(TenGigE|Bundle\-Ether)"
+
+Input parameters: type, host, community, hostname, [descr_reg_string, alias_reg_string]
+type can be - false. In that case you need to specify both: descr_reg_string, alias_reg_string as last parameters.
+
+You can use predefined types as: cisco_ios, cisco_xr, hid, omni - for phy interface scanning. 
+In that case descr and alias regexps are predefined.
+
+If you need e.g. on crs to scan all phy interfaces without BGP labels, then you need to specify custom regexps.
+
+ZAB_ can be used in description to include find that host in discovery.
+
