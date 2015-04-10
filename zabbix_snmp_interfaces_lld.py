@@ -9,21 +9,21 @@ DEBUG = 0
 """Some examples and notes
 
 Description walk example:
-snmpwalk -v2c -c public 192.168.180.100 1.3.6.1.2.1.31.1.1.1.18 | grep -i "LTK_"
+snmpbulkwalk -v2c -c public 192.168.180.100 1.3.6.1.2.1.31.1.1.1.18 | grep -i "LTK_"
 Alias walk:
-snmpwalk -v2c -c public 192.168.180.100 .1.3.6.1.2.1.31.1.1.1.1
+snmpbulkwalk -v2c -c public 192.168.180.100 .1.3.6.1.2.1.31.1.1.1.1
 
 Siemens Hid example:
-snmpwalk -v2c -c Ziemen5Power 192.168.182.34 .1.3.6.1.2.1.31.1.1.1.1
-snmpwalk -v2c -c Ziemen5Power 192.168.182.34 .1.3.6.1.2.1.31.1.1.1.18
+snmpbulkwalk -v2c -c Ziemen5Power 192.168.182.34 .1.3.6.1.2.1.31.1.1.1.1
+snmpbulkwalk -v2c -c Ziemen5Power 192.168.182.34 .1.3.6.1.2.1.31.1.1.1.18
 
 OmniSwitch example:
-snmpwalk -v2c -c public 192.168.181.59 .1.3.6.1.2.1.31.1.1.1.1
-snmpwalk -v2c -c public 192.168.181.59 .1.3.6.1.2.1.31.1.1.1.18
-snmpwalk -v2c -c public 192.168.181.59 .1.3.6.1.2.1.31.1.1.1.15
+snmpbulkwalk -v2c -c public 192.168.181.59 .1.3.6.1.2.1.31.1.1.1.1
+snmpbulkwalk -v2c -c public 192.168.181.59 .1.3.6.1.2.1.31.1.1.1.18
+snmpbulkwalk -v2c -c public 192.168.181.59 .1.3.6.1.2.1.31.1.1.1.15
 
 ASR example:
-snmpwalk -v2c -c lan2lan 192.168.148.56 1.3.6.1.2.1.31.1.1.1.18 | grep -i "LTK_"
+snmpbulkwalk -v2c -c lan2lan 192.168.148.56 1.3.6.1.2.1.31.1.1.1.18 | grep -i "LTK_"
 
 OIDs for items:
   in_oct_oid = '1.3.6.1.2.1.31.1.1.1.6.%s' % subif_idx
@@ -119,7 +119,7 @@ def get_table(OID, TYPE="STRING"):
   '''Does snmpwalk on a given oid with appropriate type and returns dictionary of idxs and values'''
 
   re_nameoid = re.compile('\.(\d+)\s\=\s%s\:\s\"?([^\"]+)\"?' % TYPE)
-  out = subprocess.Popen(['snmpwalk', '-v2c', '-c', COMMUNITY, HOST, OID], stdout=subprocess.PIPE).communicate()[0]
+  out = subprocess.Popen(['snmpbulkwalk', '-v2c', '-c', COMMUNITY, HOST, OID], stdout=subprocess.PIPE).communicate()[0]
   out = out.split('\n')
   dic = {}
   for line in out:
