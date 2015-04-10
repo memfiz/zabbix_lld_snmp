@@ -152,6 +152,6 @@ if __name__ == "__main__":
       if int(if_hispeed[idx]) > 0:
         speed_max_trigger = int(1000000*int(if_hispeed[idx])*0.9)
       json_out['data'].append({'{#HNAME}' : HOSTNAME, '{#IDX}' : str(idx), '{#IF_DESCR}' : if_descr[idx], 
-                            '{#IF_ALIAS}' : if_alias[idx], '{#TRIGGER_MAX_BPS}' : speed_max_trigger, '{#MAX_BPS}' : if_hispeed[idx]})
+                            '{#IF_ALIAS}' : if_alias[idx], '{#TRIGGER_MAX_BPS}' : str(speed_max_trigger), '{#MAX_BPS}' : if_hispeed[idx]})
 
   print json.dumps(json_out, sort_keys=True, indent=4, separators=(',', ': '))
