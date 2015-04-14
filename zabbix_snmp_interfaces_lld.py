@@ -60,7 +60,7 @@ In that case descr and alias regexps are predefined.
 
 If you need e.g. on crs to scan all phy interfaces without BGP labels, then you need to specify custom regexps.
 
-ZAB_ can be used in description to include find that host in discovery.
+ZBX_ can be used in description to include find that host in discovery.
 
 """
 import subprocess
@@ -73,8 +73,8 @@ HOST = sys.argv[2]
 COMMUNITY = sys.argv[3]
 HOSTNAME = sys.argv[4]
 
-#so far description regexp is one for all types. ZAB_ can be added in case some
-DESCR_REG_STRING = '^(\s+)?(LTK\_|ZAB\_)'
+#so far description regexp is one for all types. ZBX_ can be added in case some
+DESCR_REG_STRING = '^(\s+)?(LTK\_|ZBX\_)'
 if len(sys.argv) > 5:
   DESCR_REG_STRING = sys.argv[5]
 
@@ -133,8 +133,8 @@ if __name__ == "__main__":
   #Bet all needed tables
   if_descr = get_table(IF_DESCR_OID, "STRING")
   if DEBUG == 1: print if_descr 
-  if_oper = get_table(IF_OPER_STATUS_OID, "INTEGER")
-  if DEBUG == 1: print if_oper
+  #if_oper = get_table(IF_OPER_STATUS_OID, "INTEGER")
+  #if DEBUG == 1: print if_oper
   if_alias = get_table(IF_ALIAS_OID, "STRING")
   if DEBUG == 1: print if_alias
   if_hispeed = get_table(IF_SPEED_OID, "Gauge32")
@@ -145,8 +145,9 @@ if __name__ == "__main__":
   #go through table descr and select all UP interfaces that match descr and alias regexps
   for idx in if_descr:
     if DEBUG == 1: print idx
-    if DESCR_REGEXP.search(if_descr[idx]) and ALIAS_REGEXP.search(if_alias[idx]) and (if_oper.get(idx) == '1'):
-      if DEBUG == 1: print idx, if_descr[idx], if_oper[idx], if_alias[idx], if_hispeed[idx]
+    #if DESCR_REGEXP.search(if_descr[idx]) and ALIAS_REGEXP.search(if_alias[idx]) and (if_oper.get(idx) == '1'):
+    if DESCR_REGEXP.search(if_descr[idx]) and ALIAS_REGEXP.search(if_alias[idx]):
+      if DEBUG == 1: print idx, if_descr[idx], if_alias[idx], if_hispeed[idx]
       #100G by default. If speed is unknown, let's better do not trigger false alarms.
       speed_max_trigger = 100000000000
       if int(if_hispeed[idx]) > 0:
