@@ -46,6 +46,8 @@ OIDs for items:
 
   oper_state = '.1.3.6.1.2.1.2.2.1.8.%s' % subif_idx
 
+  admin_state = '.1.3.6.1.2.1.2.2.1.7.%s' % subif_idx
+
 XR example - all phy interfaces
 python zabbix_snmp_interfaces_lld.py cisco_xr 192.168.133.24 public SA_riga-sa9-iptv4-3750e
 
@@ -108,6 +110,9 @@ elif TYPE == 'hid':
 
 elif TYPE == 'omni':
   ALIAS_REG_STRING = '^(\d+)'
+
+elif TYPE == 'junos':
+  ALIAS_REG_STRING = '^(xe\-\d+\/\d+\/\d+|ae\d+)$'
 
 else:
   sys.exit('Error: type is incorrect.')
